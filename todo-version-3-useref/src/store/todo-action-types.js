@@ -1,0 +1,12 @@
+/**
+ * Action Types for Todo State Management
+ */
+export const TODO_ACTIONS = {
+  ADD_ITEM: 'ADD_ITEM',
+  DELETE_ITEM: 'DELETE_ITEM',
+  TOGGLE_ITEM: 'TOGGLE_ITEM',
+  UPDATE_ITEM: 'UPDATE_ITEM',
+  CLEAR_ALL: 'CLEAR_ALL',
+  SET_ITEMS: 'SET_ITEMS',
+  TOGGLE_SUBTASK: 'TOGGLE_SUBTASK',
+};
