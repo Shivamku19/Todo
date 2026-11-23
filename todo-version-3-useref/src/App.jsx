@@ -3,6 +3,7 @@ import Item1 from "./component/item1";
 import Todoitems from "./component/todoitems";
 import Welcomemess from "./component/welcomemess";
 import { TodoItemsContextProvider } from "./store/todo-items-store";
+import { ToastProvider } from "./context/ToastContext";
 import "./App.css";
 
 function AppContent() {
@@ -18,9 +19,11 @@ function AppContent() {
 
 function App() {
   return (
-    <TodoItemsContextProvider>
-      <AppContent />
-    </TodoItemsContextProvider>
+    <ToastProvider>
+      <TodoItemsContextProvider>
+        <AppContent />
+      </TodoItemsContextProvider>
+    </ToastProvider>
   );
 }
 

@@ -2,6 +2,7 @@ import { createContext, useContext, useReducer } from 'react';
 import { todoReducer } from './todo-reducer';
 import { TODO_ACTIONS } from './todo-action-types';
 import { createTodoItem, PRIORITY_LEVELS } from '../models/todo';
+import { useToast } from '../context/ToastContext';
 
 export const TodoItemsContext = createContext({
   todoItems: [],
@@ -31,12 +32,16 @@ const INITIAL_TODOS = [
 
 export const TodoItemsContextProvider = ({ children }) => {
   const [todoItems, dispatch] = useReducer(todoReducer, INITIAL_TODOS);
+  const { showToast } = useToast();
 
   const addNewItem = (itemData) => {
     dispatch({
       type: TODO_ACTIONS.ADD_ITEM,
       payload: itemData,
     });
+    if (showToast) {
+      showToast(`Task "${itemData.name}" added successfully!`, 'success');
+    }
   };
 
   const deleteItem = (idOrName) => {
@@ -44,6 +49,9 @@ export const TodoItemsContextProvider = ({ children }) => {
       type: TODO_ACTIONS.DELETE_ITEM,
       payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
     });
+    if (showToast) {
+      showToast('Task removed', 'info');
+    }
   };
 
   const toggleItem = (idOrName) => {
@@ -62,6 +70,9 @@ export const TodoItemsContextProvider = ({ children }) => {
 
   const clearAll = () => {
     dispatch({ type: TODO_ACTIONS.CLEAR_ALL });
+    if (showToast) {
+      showToast('All tasks cleared', 'info');
+    }
   };
 
   return (
