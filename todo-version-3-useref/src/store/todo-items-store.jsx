@@ -15,7 +15,7 @@ export const TodoItemsContext = createContext({
 
 const INITIAL_TODOS = [
   createTodoItem({
-    name: 'Complete React 10-day roadmap planning',
+    name: 'Review project backlog and prioritize tasks',
     dueDate: new Date().toISOString().split('T')[0],
     priority: PRIORITY_LEVELS.HIGH,
     category: 'Work',

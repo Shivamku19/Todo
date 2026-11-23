@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { RiAddCircleFill } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
 
@@ -6,6 +6,10 @@ function Item1({ onnewitem }) {
   const context = useTodo();
   const todonameelement = useRef();
   const duedateelement = useRef();
+
+  useEffect(() => {
+    todonameelement.current?.focus();
+  }, []);
 
   const handlebuttonclk = (event) => {
     if (event) event.preventDefault();
