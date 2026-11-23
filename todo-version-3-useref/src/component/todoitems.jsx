@@ -7,12 +7,12 @@ const Todoitems = ({ todoitems: propItems, ondeleteclk }) => {
   const handleDelete = ondeleteclk || context.deleteItem;
 
   return (
-    <div className="items-container">
-      {items.map((item) => (
+    <div className="items-container" role="list">
+      {items.map((item, index) => (
         <Todoitem
-          key={item.id || item.name}
+          key={item.id || `${item.name}-${index}`}
           item={item}
-          tododate={item.dueDate || item.duedate}
+          tododate={item.dueDate || item.duedate || ''}
           todoname={item.name}
           ondeleteclk={handleDelete}
         />
