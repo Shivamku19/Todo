@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 import { todoReducer } from './todo-reducer';
 import { TODO_ACTIONS } from './todo-action-types';
 import { createTodoItem, PRIORITY_LEVELS } from '../models/todo';
@@ -12,6 +12,8 @@ export const TodoItemsContext = createContext({
   updateItem: () => {},
   clearAll: () => {},
 });
+
+const STORAGE_KEY = 'todo_items_storage_v1';
 
 const INITIAL_TODOS = [
   createTodoItem({
@@ -30,9 +32,32 @@ const INITIAL_TODOS = [
   }),
 ];
 
+const getInitialTodos = () => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load tasks from localStorage:', err);
+  }
+  return INITIAL_TODOS;
+};
+
 export const TodoItemsContextProvider = ({ children }) => {
-  const [todoItems, dispatch] = useReducer(todoReducer, INITIAL_TODOS);
+  const [todoItems, dispatch] = useReducer(todoReducer, undefined, getInitialTodos);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todoItems));
+    } catch (err) {
+      console.error('Failed to persist tasks to localStorage:', err);
+    }
+  }, [todoItems]);
 
   const addNewItem = (itemData) => {
     dispatch({
