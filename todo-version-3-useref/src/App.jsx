@@ -4,6 +4,7 @@ import Item1 from "./component/item1";
 import Todoitems from "./component/todoitems";
 import Welcomemess from "./component/welcomemess";
 import TaskFilters from "./component/TaskFilters";
+import SearchBar from "./component/SearchBar";
 import { TodoItemsContextProvider, useTodo } from "./store/todo-items-store";
 import { ToastProvider } from "./context/ToastContext";
 import "./App.css";
@@ -11,6 +12,7 @@ import "./App.css";
 function AppContent() {
   const { todoItems } = useTodo();
   const [filter, setFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const counts = {
     all: todoItems.length,
@@ -19,8 +21,17 @@ function AppContent() {
   };
 
   const filteredItems = todoItems.filter((item) => {
-    if (filter === "active") return !item.completed;
-    if (filter === "completed") return item.completed;
+    if (filter === "active" && item.completed) return false;
+    if (filter === "completed" && !item.completed) return false;
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      const nameMatch = (item.name || "").toLowerCase().includes(q);
+      const categoryMatch = (item.category || "").toLowerCase().includes(q);
+      const tagsMatch = Array.isArray(item.tags) && item.tags.some((t) => t.toLowerCase().includes(q));
+      return nameMatch || categoryMatch || tagsMatch;
+    }
+
     return true;
   });
 
@@ -28,6 +39,7 @@ function AppContent() {
     <div className="todo-container container py-4">
       <Header />
       <Item1 />
+      <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <TaskFilters currentFilter={filter} onFilterChange={setFilter} counts={counts} />
       <Welcomemess todoitems={filteredItems} />
       <Todoitems todoitems={filteredItems} />
