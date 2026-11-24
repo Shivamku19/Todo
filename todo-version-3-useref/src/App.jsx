@@ -5,6 +5,7 @@ import Todoitems from "./component/todoitems";
 import Welcomemess from "./component/welcomemess";
 import TaskFilters from "./component/TaskFilters";
 import SearchBar from "./component/SearchBar";
+import TaskStats from "./component/TaskStats";
 import { TodoItemsContextProvider, useTodo } from "./store/todo-items-store";
 import { ToastProvider } from "./context/ToastContext";
 import "./App.css";
@@ -39,6 +40,7 @@ function AppContent() {
     <div className="todo-container container py-4">
       <Header />
       <Item1 />
+      <TaskStats total={counts.all} completed={counts.completed} />
       <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <TaskFilters currentFilter={filter} onFilterChange={setFilter} counts={counts} />
       <Welcomemess todoitems={filteredItems} />
