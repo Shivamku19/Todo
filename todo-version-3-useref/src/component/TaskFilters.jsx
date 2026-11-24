@@ -1,4 +1,4 @@
-function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, onToggleAll }) {
+function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, onToggleAll, sortBy, onSortChange }) {
   const filters = [
     { key: 'all', label: 'All', count: counts.all },
     { key: 'active', label: 'Active', count: counts.active },
@@ -29,7 +29,19 @@ function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, 
           })}
         </div>
 
-        <div className="d-flex gap-2">
+        <div className="d-flex align-items-center gap-2 flex-wrap">
+          <select
+            className="form-select form-select-sm"
+            style={{ width: "auto" }}
+            value={sortBy}
+            onChange={(e) => onSortChange(e.target.value)}
+            title="Sort tasks"
+          >
+            <option value="default">Sort: Default</option>
+            <option value="dueDate">Sort: Due Date</option>
+            <option value="priority">Sort: Priority</option>
+            <option value="name">Sort: Name (A-Z)</option>
+          </select>
           {counts.all > 0 && (
             <button
               type="button"

@@ -14,6 +14,7 @@ function AppContent() {
   const { todoItems, clearCompleted, toggleAllCompleted } = useTodo();
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("default");
 
   const counts = {
     all: todoItems.length,
@@ -36,6 +37,24 @@ function AppContent() {
     return true;
   });
 
+  const sortedItems = [...filteredItems].sort((a, b) => {
+    if (sortBy === "dueDate") {
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return new Date(a.dueDate) - new Date(b.dueDate);
+    }
+    if (sortBy === "priority") {
+      const priorityWeight = { urgent: 4, high: 3, medium: 2, low: 1 };
+      const weightA = priorityWeight[a.priority?.toLowerCase()] || 0;
+      const weightB = priorityWeight[b.priority?.toLowerCase()] || 0;
+      return weightB - weightA;
+    }
+    if (sortBy === "name") {
+      return (a.name || "").localeCompare(b.name || "");
+    }
+    return 0;
+  });
+
   return (
     <div className="todo-container container py-4">
       <Header />
@@ -48,9 +67,11 @@ function AppContent() {
         counts={counts}
         onClearCompleted={clearCompleted}
         onToggleAll={toggleAllCompleted}
+        sortBy={sortBy}
+        onSortChange={setSortBy}
       />
-      <Welcomemess todoitems={filteredItems} />
-      <Todoitems todoitems={filteredItems} />
+      <Welcomemess todoitems={sortedItems} />
+      <Todoitems todoitems={sortedItems} />
     </div>
   );
 }
