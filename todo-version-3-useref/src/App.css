@@ -89,3 +89,29 @@ body {
 .items-container {
   margin-top: 1.25rem;
 }
+
+.todo-item-card {
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  transition: all var(--transition-speed);
+}
+
+.todo-item-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-subtle);
+}
+
+.todo-item-card.completed-item {
+  background-color: #f8fafc;
+  opacity: 0.85;
+}
+
+.toggle-btn {
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--transition-speed);
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
