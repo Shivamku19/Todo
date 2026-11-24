@@ -11,6 +11,8 @@ export const TodoItemsContext = createContext({
   toggleItem: () => {},
   updateItem: () => {},
   clearAll: () => {},
+  clearCompleted: () => {},
+  toggleAllCompleted: () => {},
 });
 
 const STORAGE_KEY = 'todo_items_storage_v1';
@@ -100,6 +102,17 @@ export const TodoItemsContextProvider = ({ children }) => {
     }
   };
 
+  const clearCompleted = () => {
+    dispatch({ type: TODO_ACTIONS.CLEAR_COMPLETED });
+    if (showToast) {
+      showToast('Completed tasks cleared', 'info');
+    }
+  };
+
+  const toggleAllCompleted = () => {
+    dispatch({ type: TODO_ACTIONS.MARK_ALL_COMPLETED });
+  };
+
   return (
     <TodoItemsContext.Provider
       value={{
@@ -109,6 +122,8 @@ export const TodoItemsContextProvider = ({ children }) => {
         toggleItem,
         updateItem,
         clearAll,
+        clearCompleted,
+        toggleAllCompleted,
       }}
     >
       {children}

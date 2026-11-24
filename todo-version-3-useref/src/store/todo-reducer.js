@@ -50,6 +50,19 @@ export function todoReducer(state, action) {
       return [];
     }
 
+    case TODO_ACTIONS.CLEAR_COMPLETED: {
+      return state.filter((item) => !item.completed);
+    }
+
+    case TODO_ACTIONS.MARK_ALL_COMPLETED: {
+      const allCompleted = state.length > 0 && state.every((item) => item.completed);
+      return state.map((item) => ({
+        ...item,
+        completed: !allCompleted,
+        updatedAt: new Date().toISOString(),
+      }));
+    }
+
     case TODO_ACTIONS.SET_ITEMS: {
       return Array.isArray(action.payload) ? action.payload : [];
     }

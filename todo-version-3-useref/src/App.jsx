@@ -11,7 +11,7 @@ import { ToastProvider } from "./context/ToastContext";
 import "./App.css";
 
 function AppContent() {
-  const { todoItems } = useTodo();
+  const { todoItems, clearCompleted, toggleAllCompleted } = useTodo();
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -42,7 +42,13 @@ function AppContent() {
       <Item1 />
       <TaskStats total={counts.all} completed={counts.completed} />
       <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-      <TaskFilters currentFilter={filter} onFilterChange={setFilter} counts={counts} />
+      <TaskFilters
+        currentFilter={filter}
+        onFilterChange={setFilter}
+        counts={counts}
+        onClearCompleted={clearCompleted}
+        onToggleAll={toggleAllCompleted}
+      />
       <Welcomemess todoitems={filteredItems} />
       <Todoitems todoitems={filteredItems} />
     </div>

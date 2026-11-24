@@ -1,28 +1,57 @@
-function TaskFilters({ currentFilter, onFilterChange, counts }) {
+function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, onToggleAll }) {
   const filters = [
     { key: 'all', label: 'All', count: counts.all },
     { key: 'active', label: 'Active', count: counts.active },
     { key: 'completed', label: 'Completed', count: counts.completed },
   ];
 
+  const allCompleted = counts.all > 0 && counts.all === counts.completed;
+
   return (
-    <div className="task-filters d-flex justify-content-center gap-2 my-3 flex-wrap" role="group" aria-label="Task status filters">
-      {filters.map((f) => {
-        const isActive = currentFilter === f.key;
-        return (
-          <button
-            key={f.key}
-            type="button"
-            className={`btn btn-sm ${isActive ? 'btn-primary' : 'btn-outline-secondary'} d-inline-flex align-items-center gap-1 shadow-sm`}
-            onClick={() => onFilterChange(f.key)}
-          >
-            <span>{f.label}</span>
-            <span className={`badge ${isActive ? 'bg-white text-primary' : 'bg-secondary text-white'} rounded-pill`}>
-              {f.count}
-            </span>
-          </button>
-        );
-      })}
+    <div className="task-filters-section my-3">
+      <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div className="d-flex gap-1" role="group" aria-label="Task status filters">
+          {filters.map((f) => {
+            const isActive = currentFilter === f.key;
+            return (
+              <button
+                key={f.key}
+                type="button"
+                className={`btn btn-sm ${isActive ? 'btn-primary' : 'btn-outline-secondary'} d-inline-flex align-items-center gap-1`}
+                onClick={() => onFilterChange(f.key)}
+              >
+                <span>{f.label}</span>
+                <span className={`badge ${isActive ? 'bg-white text-primary' : 'bg-secondary text-white'} rounded-pill`}>
+                  {f.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="d-flex gap-2">
+          {counts.all > 0 && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary"
+              onClick={onToggleAll}
+              title="Toggle all tasks status"
+            >
+              {allCompleted ? 'Unmark all' : 'Mark all done'}
+            </button>
+          )}
+          {counts.completed > 0 && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-danger"
+              onClick={onClearCompleted}
+              title="Clear all completed tasks"
+            >
+              Clear completed
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
