@@ -115,3 +115,45 @@ body {
 .toggle-btn:hover {
   transform: scale(1.1);
 }
+
+.priority-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.priority-urgent {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.priority-high {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.priority-medium {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.priority-low {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.category-tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  background-color: #f1f5f9;
+  color: #475569;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  line-height: 1.2;
+}

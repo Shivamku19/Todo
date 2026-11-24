@@ -21,8 +21,22 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk }) {
             )}
           </button>
         </div>
-        <div className={`col-5 text-truncate ${isCompleted ? 'text-decoration-line-through text-muted' : ''}`} title={todoname}>
-          {todoname}
+        <div className="col-5">
+          <div className={`text-truncate fw-medium ${isCompleted ? 'text-decoration-line-through text-muted' : ''}`} title={todoname}>
+            {todoname}
+          </div>
+          <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+            {item?.priority && (
+              <span className={`priority-badge priority-${item.priority.toLowerCase()}`}>
+                {item.priority}
+              </span>
+            )}
+            {item?.category && (
+              <span className="category-tag">
+                {item.category}
+              </span>
+            )}
+          </div>
         </div>
         <div className="col-4 text-muted small">
           {tododate || 'No due date'}
