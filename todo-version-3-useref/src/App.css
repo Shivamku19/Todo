@@ -158,6 +158,28 @@ body {
   line-height: 1.2;
 }
 
+.due-date-pill {
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+.due-overdue {
+  color: #dc2626;
+  background-color: #fef2f2;
+  font-weight: 600;
+  border: 1px solid #fecaca;
+}
+
+.due-today {
+  color: #d97706;
+  background-color: #fffbeb;
+  font-weight: 600;
+  border: 1px solid #fef3c7;
+}
+
 @media (max-width: 576px) {
   .todo-container {
     padding: 1rem;

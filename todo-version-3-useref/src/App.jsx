@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./component/header";
 import Item1 from "./component/item1";
 import Todoitems from "./component/todoitems";
@@ -21,6 +21,11 @@ function AppContent() {
     active: todoItems.filter((t) => !t.completed).length,
     completed: todoItems.filter((t) => t.completed).length,
   };
+
+  useEffect(() => {
+    const pendingCount = counts.active;
+    document.title = pendingCount > 0 ? `(${pendingCount}) Tasks - Todo App` : "Todo App";
+  }, [counts.active]);
 
   const filteredItems = todoItems.filter((item) => {
     if (filter === "active" && item.completed) return false;

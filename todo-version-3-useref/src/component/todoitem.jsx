@@ -6,6 +6,7 @@ import {
   RiEditLine,
   RiCheckLine,
   RiCloseLine,
+  RiCalendarLine,
 } from "react-icons/ri";
 
 function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdateclk }) {
@@ -15,6 +16,23 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(todoname);
   const [editedDate, setEditedDate] = useState(tododate);
+
+  const getDueDateStatus = (dueDate, completed) => {
+    if (!dueDate) return null;
+    if (completed) {
+      return { text: dueDate, type: "normal" };
+    }
+    const today = new Date().toISOString().split("T")[0];
+    if (dueDate < today) {
+      return { text: `${dueDate} · Overdue`, type: "overdue" };
+    }
+    if (dueDate === today) {
+      return { text: `${dueDate} · Today`, type: "today" };
+    }
+    return { text: dueDate, type: "normal" };
+  };
+
+  const dueStatus = getDueDateStatus(tododate, isCompleted);
 
   const handleSave = () => {
     const trimmed = editedName.trim();
@@ -123,8 +141,23 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
             )}
           </div>
         </div>
-        <div className="col-3 text-muted small">
-          {tododate || 'No due date'}
+        <div className="col-3 small">
+          {dueStatus ? (
+            <span
+              className={`due-date-pill ${
+                dueStatus.type === "overdue"
+                  ? "due-overdue"
+                  : dueStatus.type === "today"
+                  ? "due-today"
+                  : "text-muted"
+              }`}
+            >
+              <RiCalendarLine size={13} className="me-1 align-text-bottom" />
+              {dueStatus.text}
+            </span>
+          ) : (
+            <span className="text-muted">No due date</span>
+          )}
         </div>
         <div className="col-3 text-end d-flex justify-content-end gap-1">
           <button
