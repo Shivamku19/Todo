@@ -7,15 +7,27 @@ import {
   RiCheckLine,
   RiCloseLine,
   RiCalendarLine,
+  RiListCheck2,
+  RiAddLine,
+  RiArrowDownSLine,
+  RiArrowUpSLine,
 } from "react-icons/ri";
+import { useTodo } from "../store/todo-items-store";
 
 function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdateclk }) {
+  const { addSubtask, toggleSubtask, deleteSubtask } = useTodo();
   const targetIdentifier = item && item.id ? item.id : todoname;
   const isCompleted = Boolean(item && item.completed);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(todoname);
   const [editedDate, setEditedDate] = useState(tododate);
+  const [showSubtasks, setShowSubtasks] = useState(false);
+  const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
+
+  const subtasks = Array.isArray(item?.subtasks) ? item.subtasks : [];
+  const completedSubtasks = subtasks.filter((s) => s.completed).length;
+  const totalSubtasks = subtasks.length;
 
   const getDueDateStatus = (dueDate, completed) => {
     if (!dueDate) return null;
@@ -162,6 +174,18 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
         <div className="col-3 text-end d-flex justify-content-end gap-1">
           <button
             type="button"
+            className={`btn btn-sm btns d-inline-flex align-items-center justify-content-center p-1 ${
+              showSubtasks ? "btn-primary text-white" : "btn-outline-secondary"
+            }`}
+            onClick={() => setShowSubtasks(!showSubtasks)}
+            aria-label="Toggle subtasks checklist"
+            title={totalSubtasks > 0 ? `${completedSubtasks}/${totalSubtasks} subtasks completed` : "Add checklist"}
+          >
+            <RiListCheck2 size={16} />
+            {totalSubtasks > 0 && <span className="ms-1 small">{completedSubtasks}/{totalSubtasks}</span>}
+          </button>
+          <button
+            type="button"
             className="btn btn-outline-secondary btns d-inline-flex align-items-center justify-content-center p-1"
             onClick={() => setIsEditing(true)}
             aria-label={`Edit ${todoname}`}
@@ -180,6 +204,92 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
           </button>
         </div>
       </div>
+
+      {showSubtasks && (
+        <div className="subtasks-container border-top pt-2 mt-2">
+          <div className="d-flex align-items-center justify-content-between mb-2">
+            <span className="small fw-semibold text-secondary">
+              Subtasks ({completedSubtasks}/{totalSubtasks})
+            </span>
+            {totalSubtasks > 0 && (
+              <span className="small text-muted">
+                {Math.round((completedSubtasks / totalSubtasks) * 100)}%
+              </span>
+            )}
+          </div>
+          {totalSubtasks > 0 && (
+            <div className="progress mb-2" style={{ height: "4px" }}>
+              <div
+                className="progress-bar bg-success"
+                role="progressbar"
+                style={{ width: `${(completedSubtasks / totalSubtasks) * 100}%` }}
+              />
+            </div>
+          )}
+          <div className="subtask-list d-flex flex-column gap-1 mb-2">
+            {subtasks.map((sub) => (
+              <div
+                key={sub.id}
+                className="d-flex align-items-center justify-content-between p-1 rounded bg-light"
+              >
+                <div
+                  className="d-flex align-items-center gap-2 flex-grow-1"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => toggleSubtask && toggleSubtask(item.id, sub.id)}
+                >
+                  <input
+                    type="checkbox"
+                    className="form-check-input mt-0"
+                    checked={Boolean(sub.completed)}
+                    onChange={() => toggleSubtask && toggleSubtask(item.id, sub.id)}
+                    aria-label={sub.title}
+                  />
+                  <span
+                    className={`small ${
+                      sub.completed ? "text-decoration-line-through text-muted" : ""
+                    }`}
+                  >
+                    {sub.title}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-link text-danger p-0 ms-2"
+                  onClick={() => deleteSubtask && deleteSubtask(item.id, sub.id)}
+                  title="Delete subtask"
+                >
+                  <RiCloseLine size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (newSubtaskTitle.trim() && addSubtask) {
+                addSubtask(item.id, newSubtaskTitle.trim());
+                setNewSubtaskTitle("");
+              }
+            }}
+            className="d-flex gap-1"
+          >
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              placeholder="Add a subtask..."
+              value={newSubtaskTitle}
+              onChange={(e) => setNewSubtaskTitle(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="btn btn-sm btn-outline-primary d-inline-flex align-items-center px-2"
+              disabled={!newSubtaskTitle.trim()}
+            >
+              <RiAddLine size={16} />
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

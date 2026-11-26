@@ -106,6 +106,12 @@ body {
   opacity: 0.85;
 }
 
+.subtasks-container {
+  background-color: #f8fafc;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+}
+
 .toggle-btn {
   line-height: 1;
   cursor: pointer;
