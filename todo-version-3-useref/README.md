@@ -1,16 +1,24 @@
-# 📝 React Todo App (useRef & Bootstrap)
+# 📝 React Todo App (Advanced Architecture)
 
-A responsive and interactive Todo application built with **React 19**, **Vite**, and **Bootstrap 5**. This version demonstrates the use of React's `useRef` hook for handling form inputs efficiently without triggering re-renders on every keystroke.
+A responsive, feature-rich Todo and task productivity application built with **React 19**, **Vite**, and **Bootstrap 5**.
 
 ---
 
 ## 🚀 Features
 
-- **Add Tasks:** Enter task name and choose a due date.
-- **Uncontrolled Inputs with `useRef`:** Fast form handling using `useRef` references rather than continuous state updates.
-- **Delete Tasks:** Remove individual completed tasks with one click.
-- **Dynamic Empty State:** Displays a friendly message (*"ENJOY YOUR DAY U R FREE"*) when there are no tasks left.
-- **Clean UI & Icons:** Styled using Bootstrap 5 grid and icons from `react-icons` (Remix Icons).
+- **⚡ Fast Task Creation (`useRef`):** Uncontrolled form inputs leveraging React's `useRef` to eliminate unnecessary re-renders while typing.
+- **📋 Subtask Checklists:** Break down tasks into subtasks with progress tracking bar, item completion toggles, and inline subtask management.
+- **🌙 Dark / Light Mode:** Fully responsive theme switcher with automatic preference detection and `localStorage` persistence.
+- **💾 Backup & Restore (Export/Import):** Export tasks to a formatted JSON file and restore or merge backups directly into your browser storage.
+- **🏷️ Custom Tags & Tag Filtering:** Tag tasks with topics (`#work`, `#bug`, `#react`) and filter active tasks by clicking tags.
+- **📝 Task Descriptions & Notes:** Add detailed notes or descriptions to tasks with collapsible previews and inline editing.
+- **⚠️ Destructive Action Confirmation:** Reusable confirmation dialogs preventing accidental task deletions and bulk clears.
+- **⌨️ Keyboard Shortcuts:** Navigate with speed using global shortcuts (`N` for new task, `/` for search, `?` for shortcuts guide, `Esc` to close).
+- **🎉 Celebratory Empty States:** Dynamic contextual feedback displaying congratulations when all tasks are complete, friendly onboarding for new users, and empty search indicators.
+- **📅 Deadline Status Indicators:** Live badges highlighting tasks that are Overdue, Due Today, or Upcoming.
+- **🔍 Search & Filter:** Filter tasks by status (All, Active, Completed), custom tags, and search text across title, tags, and descriptions.
+- **🔄 Multi-criteria Sorting:** Sort tasks by due date, priority (Urgent, High, Medium, Low), or alphabetical title.
+- **🔔 Toast Feedback & Error Boundary:** Non-blocking action toasts and a resilient React Error Boundary preventing UI crashes.
 
 ---
 
@@ -18,27 +26,21 @@ A responsive and interactive Todo application built with **React 19**, **Vite**,
 
 - **Frontend Library:** [React 19](https://react.dev/)
 - **Build Tool:** [Vite](https://vitejs.dev/)
-- **Styling:** [Bootstrap 5](https://getbootstrap.com/) & Custom CSS / CSS Modules
+- **Styling:** [Bootstrap 5](https://getbootstrap.com/) & Scoped CSS Modules
 - **Icons:** [React Icons](https://react-icons.github.io/react-icons/) (`react-icons/ri`)
+- **State Management:** React Context API & `useReducer` with LocalStorage Synchronization
 
 ---
 
-## 📁 Project Structure
+## ⌨️ Keyboard Shortcuts Reference
 
-```text
-src/
-├── assets/
-├── component/
-│   ├── header.jsx              # App header title
-│   ├── item1.jsx               # Task input form (uses useRef)
-│   ├── todoitem.jsx            # Individual todo item row with delete button
-│   ├── todoitems.jsx           # Container component that maps over tasks
-│   ├── welcomemess.jsx         # Empty state welcome message
-│   └── welcomemess.module.css  # CSS module for welcome message
-├── App.css                     # Main styling
-├── App.jsx                     # Root component managing task state
-└── main.jsx                    # Vite React root mount
-```
+| Shortcut | Action |
+| :--- | :--- |
+| <kbd>N</kbd> | Focus task title input |
+| <kbd>/</kbd> | Focus search bar |
+| <kbd>?</kbd> | Toggle keyboard shortcuts modal |
+| <kbd>Esc</kbd> | Close dialogs / Clear focus |
+| <kbd>Enter</kbd> | Save inline task edit or add task |
 
 ---
 
@@ -46,23 +48,23 @@ src/
 
 ### Prerequisites
 
-Make sure you have [Node.js](https://nodejs.org/) installed (v18 or higher recommended).
+Node.js v18 or higher is recommended.
 
-### 1. Install Dependencies
+### 1. Installation
 
 ```bash
 npm install
 ```
 
-### 2. Start Development Server
+### 2. Run Locally
 
 ```bash
 npm run dev
 ```
 
-Open your browser and navigate to `http://localhost:5173`.
+Visit `http://localhost:5173` in your browser.
 
-### 3. Build for Production
+### 3. Production Build
 
 ```bash
 npm run build
@@ -70,9 +72,6 @@ npm run build
 
 ---
 
-## 🧠 Key React Concepts Demonstrated
+## 📄 License
 
-- **`useRef` Hook:** Used in `item1.jsx` to access input field values directly when adding a task, avoiding re-renders on every keystroke.
-- **State Lifting:** Managing `todoitems` state array in `App.jsx` and passing state / action handlers down through props.
-- **Conditional Rendering:** Showing `Welcomemess` when `todoitems.length === 0`.
-- **Component Decomposition:** Breaking the UI into modular, reusable components.
+This project is licensed under the [MIT License](LICENSE).
