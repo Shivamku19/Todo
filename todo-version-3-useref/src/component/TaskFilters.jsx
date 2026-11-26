@@ -2,7 +2,18 @@ import { useState } from "react";
 import { RiDatabase2Line } from "react-icons/ri";
 import DataBackupModal from "./DataBackupModal";
 
-function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, onToggleAll, sortBy, onSortChange }) {
+function TaskFilters({
+  currentFilter,
+  onFilterChange,
+  counts,
+  onClearCompleted,
+  onToggleAll,
+  sortBy,
+  onSortChange,
+  allTags = [],
+  selectedTag = null,
+  onSelectTag = () => {},
+}) {
   const [isBackupOpen, setIsBackupOpen] = useState(false);
 
   const filters = [
@@ -79,6 +90,37 @@ function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, 
           </button>
         </div>
       </div>
+
+      {allTags.length > 0 && (
+        <div className="d-flex align-items-center gap-1 flex-wrap mt-2 pt-2 border-top">
+          <span className="small text-muted me-1">Filter by tag:</span>
+          {allTags.map((tag) => {
+            const isTagActive = selectedTag === tag;
+            return (
+              <button
+                key={tag}
+                type="button"
+                className={`btn btn-sm py-0 px-2 rounded-pill small ${
+                  isTagActive ? "btn-secondary text-white" : "btn-outline-secondary"
+                }`}
+                onClick={() => onSelectTag(isTagActive ? null : tag)}
+              >
+                #{tag}
+              </button>
+            );
+          })}
+          {selectedTag && (
+            <button
+              type="button"
+              className="btn btn-sm btn-link text-decoration-none py-0 px-1 text-danger small"
+              onClick={() => onSelectTag(null)}
+            >
+              Clear tag filter
+            </button>
+          )}
+        </div>
+      )}
+
       <DataBackupModal
         isOpen={isBackupOpen}
         onClose={() => setIsBackupOpen(false)}

@@ -151,6 +151,12 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
                 {item.category}
               </span>
             )}
+            {Array.isArray(item?.tags) &&
+              item.tags.map((tag) => (
+                <span key={tag} className="badge bg-light text-secondary border small">
+                  #{tag}
+                </span>
+              ))}
           </div>
         </div>
         <div className="col-3 small">

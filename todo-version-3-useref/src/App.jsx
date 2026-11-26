@@ -16,6 +16,11 @@ function AppContent() {
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("default");
+  const [selectedTag, setSelectedTag] = useState(null);
+
+  const allTags = Array.from(
+    new Set(todoItems.flatMap((item) => (Array.isArray(item.tags) ? item.tags : [])))
+  ).filter(Boolean);
 
   const counts = {
     all: todoItems.length,
@@ -31,6 +36,9 @@ function AppContent() {
   const filteredItems = todoItems.filter((item) => {
     if (filter === "active" && item.completed) return false;
     if (filter === "completed" && !item.completed) return false;
+    if (selectedTag && (!Array.isArray(item.tags) || !item.tags.includes(selectedTag))) {
+      return false;
+    }
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
@@ -75,6 +83,9 @@ function AppContent() {
         onToggleAll={toggleAllCompleted}
         sortBy={sortBy}
         onSortChange={setSortBy}
+        allTags={allTags}
+        selectedTag={selectedTag}
+        onSelectTag={setSelectedTag}
       />
       <Welcomemess todoitems={sortedItems} />
       <Todoitems todoitems={sortedItems} />

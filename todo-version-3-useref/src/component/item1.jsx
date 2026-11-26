@@ -9,10 +9,25 @@ function Item1({ onnewitem }) {
   const duedateelement = useRef();
   const [priority, setPriority] = useState(PRIORITY_LEVELS.MEDIUM);
   const [category, setCategory] = useState("General");
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
 
   useEffect(() => {
     todonameelement.current?.focus();
   }, []);
+
+  const handleAddTag = (e) => {
+    if (e) e.preventDefault();
+    const clean = tagInput.trim().replace(/^#/, "");
+    if (clean && !tags.includes(clean)) {
+      setTags([...tags, clean]);
+      setTagInput("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setTags(tags.filter((t) => t !== tagToRemove));
+  };
 
   const handlebuttonclk = (event) => {
     if (event) event.preventDefault();
@@ -29,6 +44,7 @@ function Item1({ onnewitem }) {
       dueDate: duedate,
       priority,
       category,
+      tags,
     };
 
     if (onnewitem) {
@@ -39,6 +55,8 @@ function Item1({ onnewitem }) {
 
     setPriority(PRIORITY_LEVELS.MEDIUM);
     setCategory("General");
+    setTags([]);
+    setTagInput("");
   };
 
   return (
@@ -97,6 +115,47 @@ function Item1({ onnewitem }) {
               ))}
             </select>
           </div>
+        </div>
+        <div className="mt-2 d-flex align-items-center gap-2 flex-wrap">
+          <div className="input-group input-group-sm" style={{ maxWidth: "260px" }}>
+            <span className="input-group-text">#</span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Add tag (e.g. bug, urgent)"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleAddTag();
+                }
+              }}
+            />
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={handleAddTag}
+              disabled={!tagInput.trim()}
+            >
+              Add
+            </button>
+          </div>
+          {tags.map((t) => (
+            <span
+              key={t}
+              className="badge bg-secondary-subtle text-secondary border d-inline-flex align-items-center gap-1"
+            >
+              #{t}
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                style={{ fontSize: "0.55rem" }}
+                onClick={() => handleRemoveTag(t)}
+                aria-label={`Remove tag ${t}`}
+              />
+            </span>
+          ))}
         </div>
       </form>
     </div>
