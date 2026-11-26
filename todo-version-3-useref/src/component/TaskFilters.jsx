@@ -1,4 +1,10 @@
+import { useState } from "react";
+import { RiDatabase2Line } from "react-icons/ri";
+import DataBackupModal from "./DataBackupModal";
+
 function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, onToggleAll, sortBy, onSortChange }) {
+  const [isBackupOpen, setIsBackupOpen] = useState(false);
+
   const filters = [
     { key: 'all', label: 'All', count: counts.all },
     { key: 'active', label: 'Active', count: counts.active },
@@ -62,8 +68,21 @@ function TaskFilters({ currentFilter, onFilterChange, counts, onClearCompleted, 
               Clear completed
             </button>
           )}
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1"
+            onClick={() => setIsBackupOpen(true)}
+            title="Backup & Restore tasks (JSON)"
+          >
+            <RiDatabase2Line size={15} />
+            <span>Backup</span>
+          </button>
         </div>
       </div>
+      <DataBackupModal
+        isOpen={isBackupOpen}
+        onClose={() => setIsBackupOpen(false)}
+      />
     </div>
   );
 }

@@ -16,6 +16,7 @@ export const TodoItemsContext = createContext({
   addSubtask: () => {},
   toggleSubtask: () => {},
   deleteSubtask: () => {},
+  importTodos: () => {},
 });
 
 const STORAGE_KEY = 'todo_items_storage_v1';
@@ -138,6 +139,24 @@ export const TodoItemsContextProvider = ({ children }) => {
     });
   };
 
+  const importTodos = (importedList, replace = false) => {
+    if (!Array.isArray(importedList)) return;
+    const validItems = importedList
+      .filter((item) => item && typeof item.name === 'string' && item.name.trim())
+      .map((item) => createTodoItem(item));
+
+    if (validItems.length === 0) {
+      if (showToast) showToast('No valid tasks found in file', 'danger');
+      return;
+    }
+
+    const merged = replace ? validItems : [...validItems, ...todoItems];
+    dispatch({ type: TODO_ACTIONS.SET_ITEMS, payload: merged });
+    if (showToast) {
+      showToast(`Successfully imported ${validItems.length} tasks!`, 'success');
+    }
+  };
+
   return (
     <TodoItemsContext.Provider
       value={{
@@ -152,6 +171,7 @@ export const TodoItemsContextProvider = ({ children }) => {
         addSubtask,
         toggleSubtask,
         deleteSubtask,
+        importTodos,
       }}
     >
       {children}
