@@ -23,6 +23,37 @@
   --transition-speed: 0.2s ease-in-out;
 }
 
+[data-bs-theme="dark"] {
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+}
+
+[data-bs-theme="dark"] .todo-item-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+[data-bs-theme="dark"] .todo-item-card.completed-item {
+  background-color: #172033;
+}
+
+[data-bs-theme="dark"] .subtasks-container {
+  background-color: #0f172a;
+}
+
+[data-bs-theme="dark"] .task-input-form {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .subtasks-container .bg-light {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
 body {
   background-color: var(--bg-body);
   color: var(--text-main);

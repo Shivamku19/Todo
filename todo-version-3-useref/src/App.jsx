@@ -8,6 +8,7 @@ import SearchBar from "./component/SearchBar";
 import TaskStats from "./component/TaskStats";
 import { TodoItemsContextProvider, useTodo } from "./store/todo-items-store";
 import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "./App.css";
 
 function AppContent() {
@@ -83,11 +84,13 @@ function AppContent() {
 
 function App() {
   return (
-    <ToastProvider>
-      <TodoItemsContextProvider>
-        <AppContent />
-      </TodoItemsContextProvider>
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <TodoItemsContextProvider>
+          <AppContent />
+        </TodoItemsContextProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 
