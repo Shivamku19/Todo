@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RiDatabase2Line } from "react-icons/ri";
 import DataBackupModal from "./DataBackupModal";
+import ConfirmModal from "./ConfirmModal";
 
 function TaskFilters({
   currentFilter,
@@ -15,6 +16,7 @@ function TaskFilters({
   onSelectTag = () => {},
 }) {
   const [isBackupOpen, setIsBackupOpen] = useState(false);
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
 
   const filters = [
     { key: 'all', label: 'All', count: counts.all },
@@ -73,7 +75,7 @@ function TaskFilters({
             <button
               type="button"
               className="btn btn-sm btn-outline-danger"
-              onClick={onClearCompleted}
+              onClick={() => setIsClearModalOpen(true)}
               title="Clear all completed tasks"
             >
               Clear completed
@@ -124,6 +126,18 @@ function TaskFilters({
       <DataBackupModal
         isOpen={isBackupOpen}
         onClose={() => setIsBackupOpen(false)}
+      />
+      <ConfirmModal
+        isOpen={isClearModalOpen}
+        title="Clear Completed Tasks"
+        message={`Are you sure you want to remove all ${counts.completed} completed tasks?`}
+        confirmText="Clear Completed"
+        confirmVariant="danger"
+        onConfirm={() => {
+          onClearCompleted();
+          setIsClearModalOpen(false);
+        }}
+        onCancel={() => setIsClearModalOpen(false)}
       />
     </div>
   );

@@ -13,6 +13,7 @@ import {
   RiArrowUpSLine,
 } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
+import ConfirmModal from "./ConfirmModal";
 
 function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdateclk }) {
   const { addSubtask, toggleSubtask, deleteSubtask } = useTodo();
@@ -24,6 +25,7 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
   const [editedDate, setEditedDate] = useState(tododate);
   const [showSubtasks, setShowSubtasks] = useState(false);
   const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const subtasks = Array.isArray(item?.subtasks) ? item.subtasks : [];
   const completedSubtasks = subtasks.filter((s) => s.completed).length;
@@ -202,7 +204,7 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
           <button
             type="button"
             className="btn btn-danger btns d-inline-flex align-items-center justify-content-center p-1"
-            onClick={() => ondeleteclk(targetIdentifier)}
+            onClick={() => setIsDeleteModalOpen(true)}
             aria-label={`Delete ${todoname}`}
             title="Delete task"
           >
@@ -210,6 +212,19 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
           </button>
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Delete Task"
+        message={`Are you sure you want to delete "${todoname}"?`}
+        confirmText="Delete"
+        confirmVariant="danger"
+        onConfirm={() => {
+          ondeleteclk(targetIdentifier);
+          setIsDeleteModalOpen(false);
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
 
       {showSubtasks && (
         <div className="subtasks-container border-top pt-2 mt-2">
