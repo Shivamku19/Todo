@@ -11,6 +11,7 @@ import {
   RiAddLine,
   RiArrowDownSLine,
   RiArrowUpSLine,
+  RiFileTextLine,
 } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
 import ConfirmModal from "./ConfirmModal";
@@ -23,6 +24,7 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(todoname);
   const [editedDate, setEditedDate] = useState(tododate);
+  const [editedDesc, setEditedDesc] = useState(item?.description || "");
   const [showSubtasks, setShowSubtasks] = useState(false);
   const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -54,6 +56,7 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
       onupdateclk(targetIdentifier, {
         name: trimmed,
         dueDate: editedDate,
+        description: editedDesc.trim(),
       });
     }
     setIsEditing(false);
@@ -62,6 +65,7 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
   const handleCancel = () => {
     setEditedName(todoname);
     setEditedDate(tododate);
+    setEditedDesc(item?.description || "");
     setIsEditing(false);
   };
 
@@ -115,6 +119,16 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
             >
               <RiCloseLine size={16} />
             </button>
+          </div>
+          <div className="col-12 mt-1">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              value={editedDesc}
+              onChange={(e) => setEditedDesc(e.target.value)}
+              placeholder="Task notes / description (optional)"
+              onKeyDown={handleKeyDown}
+            />
           </div>
         </div>
       </div>
@@ -212,6 +226,13 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
           </button>
         </div>
       </div>
+
+      {item?.description && (
+        <div className="small text-muted mt-2 pt-2 border-top d-flex align-items-start gap-1">
+          <RiFileTextLine size={15} className="mt-1 flex-shrink-0 text-primary" />
+          <span className="text-break">{item.description}</span>
+        </div>
+      )}
 
       <ConfirmModal
         isOpen={isDeleteModalOpen}

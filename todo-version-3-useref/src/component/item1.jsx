@@ -11,6 +11,8 @@ function Item1({ onnewitem }) {
   const [category, setCategory] = useState("General");
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
+  const [showDesc, setShowDesc] = useState(false);
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     todonameelement.current?.focus();
@@ -45,6 +47,7 @@ function Item1({ onnewitem }) {
       priority,
       category,
       tags,
+      description: description.trim(),
     };
 
     if (onnewitem) {
@@ -57,6 +60,8 @@ function Item1({ onnewitem }) {
     setCategory("General");
     setTags([]);
     setTagInput("");
+    setDescription("");
+    setShowDesc(false);
   };
 
   return (
@@ -156,7 +161,25 @@ function Item1({ onnewitem }) {
               />
             </span>
           ))}
+          <button
+            type="button"
+            className="btn btn-sm btn-link text-decoration-none p-0 ms-auto text-secondary small"
+            onClick={() => setShowDesc(!showDesc)}
+          >
+            {showDesc ? "− Hide Note" : "+ Add Note"}
+          </button>
         </div>
+        {showDesc && (
+          <div className="mt-2">
+            <textarea
+              className="form-control form-control-sm"
+              rows="2"
+              placeholder="Add details, notes, or links (optional)..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+        )}
       </form>
     </div>
   );

@@ -43,9 +43,10 @@ function AppContent() {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       const nameMatch = (item.name || "").toLowerCase().includes(q);
+      const descMatch = (item.description || "").toLowerCase().includes(q);
       const categoryMatch = (item.category || "").toLowerCase().includes(q);
       const tagsMatch = Array.isArray(item.tags) && item.tags.some((t) => t.toLowerCase().includes(q));
-      return nameMatch || categoryMatch || tagsMatch;
+      return nameMatch || descMatch || categoryMatch || tagsMatch;
     }
 
     return true;
