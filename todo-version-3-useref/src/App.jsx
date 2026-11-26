@@ -6,6 +6,7 @@ import Welcomemess from "./component/welcomemess";
 import TaskFilters from "./component/TaskFilters";
 import SearchBar from "./component/SearchBar";
 import TaskStats from "./component/TaskStats";
+import KeyboardShortcutsModal from "./component/KeyboardShortcutsModal";
 import { TodoItemsContextProvider, useTodo } from "./store/todo-items-store";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -17,6 +18,32 @@ function AppContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [selectedTag, setSelectedTag] = useState(null);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+      const isInput = activeTag === "input" || activeTag === "textarea" || activeTag === "select";
+
+      if (e.key === "?" && !isInput) {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+      } else if (e.key === "/" && !isInput) {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[type="search"], input[placeholder*="Search"]');
+        searchInput?.focus();
+      } else if ((e.key === "n" || e.key === "N") && !isInput) {
+        e.preventDefault();
+        const taskInput = document.querySelector("input.todo");
+        taskInput?.focus();
+      } else if (e.key === "Escape") {
+        setIsShortcutsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const allTags = Array.from(
     new Set(todoItems.flatMap((item) => (Array.isArray(item.tags) ? item.tags : [])))
@@ -72,7 +99,7 @@ function AppContent() {
 
   return (
     <div className="todo-container container py-4">
-      <Header />
+      <Header onOpenShortcuts={() => setIsShortcutsOpen(true)} />
       <Item1 />
       <TaskStats total={counts.all} completed={counts.completed} />
       <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
@@ -90,6 +117,10 @@ function AppContent() {
       />
       <Welcomemess todoitems={sortedItems} />
       <Todoitems todoitems={sortedItems} />
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
+      />
     </div>
   );
 }

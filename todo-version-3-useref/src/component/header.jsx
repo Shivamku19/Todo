@@ -1,8 +1,8 @@
 
-import { RiSunLine, RiMoonClearLine } from "react-icons/ri";
+import { RiSunLine, RiMoonClearLine, RiKeyboardLine } from "react-icons/ri";
 import { useTheme } from "../context/ThemeContext";
 
-function Header() {
+function Header({ onOpenShortcuts }) {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -10,7 +10,18 @@ function Header() {
       <div className="flex-grow-1 text-center">
         <h1 className="head mb-0">TODO APP</h1>
       </div>
-      <div>
+      <div className="d-flex align-items-center gap-2">
+        {onOpenShortcuts && (
+          <button
+            type="button"
+            className="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 rounded-circle"
+            onClick={onOpenShortcuts}
+            title="Keyboard shortcuts (?)"
+            aria-label="Keyboard shortcuts"
+          >
+            <RiKeyboardLine size={19} />
+          </button>
+        )}
         <button
           type="button"
           className="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 rounded-circle"
