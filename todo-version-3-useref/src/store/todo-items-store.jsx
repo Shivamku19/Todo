@@ -13,6 +13,9 @@ export const TodoItemsContext = createContext({
   clearAll: () => {},
   clearCompleted: () => {},
   toggleAllCompleted: () => {},
+  addSubtask: () => {},
+  toggleSubtask: () => {},
+  deleteSubtask: () => {},
 });
 
 const STORAGE_KEY = 'todo_items_storage_v1';
@@ -113,6 +116,28 @@ export const TodoItemsContextProvider = ({ children }) => {
     dispatch({ type: TODO_ACTIONS.MARK_ALL_COMPLETED });
   };
 
+  const addSubtask = (todoId, title) => {
+    if (!title || !title.trim()) return;
+    dispatch({
+      type: TODO_ACTIONS.ADD_SUBTASK,
+      payload: { todoId, title: title.trim() },
+    });
+  };
+
+  const toggleSubtask = (todoId, subtaskId) => {
+    dispatch({
+      type: TODO_ACTIONS.TOGGLE_SUBTASK,
+      payload: { todoId, subtaskId },
+    });
+  };
+
+  const deleteSubtask = (todoId, subtaskId) => {
+    dispatch({
+      type: TODO_ACTIONS.DELETE_SUBTASK,
+      payload: { todoId, subtaskId },
+    });
+  };
+
   return (
     <TodoItemsContext.Provider
       value={{
@@ -124,6 +149,9 @@ export const TodoItemsContextProvider = ({ children }) => {
         clearAll,
         clearCompleted,
         toggleAllCompleted,
+        addSubtask,
+        toggleSubtask,
+        deleteSubtask,
       }}
     >
       {children}

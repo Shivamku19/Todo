@@ -63,6 +63,52 @@ export function todoReducer(state, action) {
       }));
     }
 
+    case TODO_ACTIONS.ADD_SUBTASK: {
+      const { todoId, title } = action.payload;
+      return state.map((item) => {
+        if (item.id !== todoId) return item;
+        const newSubtask = {
+          id: 'sub_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+          title: title.trim(),
+          completed: false,
+        };
+        const currentSubtasks = Array.isArray(item.subtasks) ? item.subtasks : [];
+        return {
+          ...item,
+          subtasks: [...currentSubtasks, newSubtask],
+          updatedAt: new Date().toISOString(),
+        };
+      });
+    }
+
+    case TODO_ACTIONS.TOGGLE_SUBTASK: {
+      const { todoId, subtaskId } = action.payload;
+      return state.map((item) => {
+        if (item.id !== todoId) return item;
+        const currentSubtasks = Array.isArray(item.subtasks) ? item.subtasks : [];
+        return {
+          ...item,
+          subtasks: currentSubtasks.map((sub) =>
+            sub.id === subtaskId ? { ...sub, completed: !sub.completed } : sub
+          ),
+          updatedAt: new Date().toISOString(),
+        };
+      });
+    }
+
+    case TODO_ACTIONS.DELETE_SUBTASK: {
+      const { todoId, subtaskId } = action.payload;
+      return state.map((item) => {
+        if (item.id !== todoId) return item;
+        const currentSubtasks = Array.isArray(item.subtasks) ? item.subtasks : [];
+        return {
+          ...item,
+          subtasks: currentSubtasks.filter((sub) => sub.id !== subtaskId),
+          updatedAt: new Date().toISOString(),
+        };
+      });
+    }
+
     case TODO_ACTIONS.SET_ITEMS: {
       return Array.isArray(action.payload) ? action.payload : [];
     }
