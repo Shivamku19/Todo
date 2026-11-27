@@ -16,6 +16,9 @@ function TaskFilters({
   allTags = [],
   selectedTag = null,
   onSelectTag = () => {},
+  allCategories = [],
+  selectedCategory = null,
+  onSelectCategory = () => {},
 }) {
   const { todoItems } = useTodo();
   const [isBackupOpen, setIsBackupOpen] = useState(false);
@@ -116,6 +119,36 @@ function TaskFilters({
           </button>
         </div>
       </div>
+
+      {allCategories.length > 0 && (
+        <div className="d-flex align-items-center gap-1 flex-wrap mt-2 pt-2 border-top">
+          <span className="small text-muted me-1">Category:</span>
+          {allCategories.map((cat) => {
+            const isCatActive = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                className={`btn btn-sm py-0 px-2 rounded-pill small ${
+                  isCatActive ? "btn-primary text-white" : "btn-outline-secondary"
+                }`}
+                onClick={() => onSelectCategory(isCatActive ? null : cat)}
+              >
+                {cat}
+              </button>
+            );
+          })}
+          {selectedCategory && (
+            <button
+              type="button"
+              className="btn btn-sm btn-link text-decoration-none py-0 px-1 text-danger small"
+              onClick={() => onSelectCategory(null)}
+            >
+              Clear category
+            </button>
+          )}
+        </div>
+      )}
 
       {allTags.length > 0 && (
         <div className="d-flex align-items-center gap-1 flex-wrap mt-2 pt-2 border-top">

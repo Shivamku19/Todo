@@ -18,6 +18,7 @@ function AppContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
 
   useEffect(() => {
@@ -49,6 +50,10 @@ function AppContent() {
     new Set(todoItems.flatMap((item) => (Array.isArray(item.tags) ? item.tags : [])))
   ).filter(Boolean);
 
+  const allCategories = Array.from(
+    new Set(todoItems.map((item) => item.category).filter(Boolean))
+  );
+
   const counts = {
     all: todoItems.length,
     active: todoItems.filter((t) => !t.completed).length,
@@ -65,6 +70,9 @@ function AppContent() {
     if (filter === "active" && item.completed) return false;
     if (filter === "completed" && !item.completed) return false;
     if (filter === "starred" && !item.isPinned) return false;
+    if (selectedCategory && item.category !== selectedCategory) {
+      return false;
+    }
     if (selectedTag && (!Array.isArray(item.tags) || !item.tags.includes(selectedTag))) {
       return false;
     }
@@ -120,6 +128,9 @@ function AppContent() {
         allTags={allTags}
         selectedTag={selectedTag}
         onSelectTag={setSelectedTag}
+        allCategories={allCategories}
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
       />
       <Welcomemess todoitems={sortedItems} />
       <Todoitems todoitems={sortedItems} sortBy={sortBy} />

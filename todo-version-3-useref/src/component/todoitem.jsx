@@ -229,7 +229,7 @@ function Todoitem({
               </span>
             )}
             {item?.category && (
-              <span className="category-tag">
+              <span className={`category-tag category-${item.category.toLowerCase()}`}>
                 {item.category}
               </span>
             )}

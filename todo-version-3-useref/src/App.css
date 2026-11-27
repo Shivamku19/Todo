@@ -250,6 +250,46 @@ body {
   line-height: 1.2;
 }
 
+.category-work {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.category-personal {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+}
+
+.category-shopping {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+
+.category-fitness {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+[data-bs-theme="dark"] .category-work {
+  background-color: #312e81;
+  color: #c7d2fe;
+}
+
+[data-bs-theme="dark"] .category-personal {
+  background-color: #581c87;
+  color: #e9d5ff;
+}
+
+[data-bs-theme="dark"] .category-shopping {
+  background-color: #064e3b;
+  color: #a7f3d0;
+}
+
+[data-bs-theme="dark"] .category-fitness {
+  background-color: #78350f;
+  color: #fde68a;
+}
+
 .due-date-pill {
   font-size: 0.75rem;
   display: inline-flex;
