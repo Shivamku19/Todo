@@ -122,7 +122,7 @@ function AppContent() {
         onSelectTag={setSelectedTag}
       />
       <Welcomemess todoitems={sortedItems} />
-      <Todoitems todoitems={sortedItems} />
+      <Todoitems todoitems={sortedItems} sortBy={sortBy} />
       <KeyboardShortcutsModal
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}

@@ -19,8 +19,25 @@ import {
 import { useTodo } from "../store/todo-items-store";
 import ConfirmModal from "./ConfirmModal";
 
-function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdateclk }) {
-  const { addSubtask, toggleSubtask, deleteSubtask, togglePinItem, duplicateItem } = useTodo();
+function Todoitem({
+  item,
+  todoname,
+  tododate,
+  ondeleteclk,
+  ontoggleclk,
+  onupdateclk,
+  canMoveUp = false,
+  canMoveDown = false,
+}) {
+  const {
+    addSubtask,
+    toggleSubtask,
+    deleteSubtask,
+    togglePinItem,
+    duplicateItem,
+    moveItemUp,
+    moveItemDown,
+  } = useTodo();
   const targetIdentifier = item && item.id ? item.id : todoname;
   const isCompleted = Boolean(item && item.completed);
 
@@ -141,7 +158,31 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
   return (
     <div className={`todo-item-card container my-2 p-2 rounded ${isCompleted ? 'completed-item' : ''} ${item?.isPinned ? 'pinned-item' : ''}`} role="listitem">
       <div className="row kg-row align-items-center">
-        <div className="col-1 text-center">
+        <div className="col-1 text-center d-flex align-items-center justify-content-center">
+          {(canMoveUp || canMoveDown) && (
+            <div className="d-flex flex-column me-1 reorder-btns">
+              <button
+                type="button"
+                className="btn btn-link p-0 text-muted reorder-btn"
+                disabled={!canMoveUp}
+                onClick={() => moveItemUp && moveItemUp(targetIdentifier)}
+                title="Move up"
+                aria-label="Move task up"
+              >
+                <RiArrowUpSLine size={13} />
+              </button>
+              <button
+                type="button"
+                className="btn btn-link p-0 text-muted reorder-btn"
+                disabled={!canMoveDown}
+                onClick={() => moveItemDown && moveItemDown(targetIdentifier)}
+                title="Move down"
+                aria-label="Move task down"
+              >
+                <RiArrowDownSLine size={13} />
+              </button>
+            </div>
+          )}
           <button
             type="button"
             className="btn btn-link p-0 text-decoration-none toggle-btn"

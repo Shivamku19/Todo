@@ -33,6 +33,28 @@ export function todoReducer(state, action) {
       return newState;
     }
 
+    case TODO_ACTIONS.MOVE_ITEM_UP: {
+      const targetId = action.payload.id || action.payload.name;
+      const index = state.findIndex((item) => (item.id ? item.id === targetId : item.name === targetId));
+      if (index <= 0) return state;
+      const newState = [...state];
+      const temp = newState[index];
+      newState[index] = newState[index - 1];
+      newState[index - 1] = temp;
+      return newState;
+    }
+
+    case TODO_ACTIONS.MOVE_ITEM_DOWN: {
+      const targetId = action.payload.id || action.payload.name;
+      const index = state.findIndex((item) => (item.id ? item.id === targetId : item.name === targetId));
+      if (index === -1 || index >= state.length - 1) return state;
+      const newState = [...state];
+      const temp = newState[index];
+      newState[index] = newState[index + 1];
+      newState[index + 1] = temp;
+      return newState;
+    }
+
     case TODO_ACTIONS.TOGGLE_ITEM: {
       const targetId = action.payload.id || action.payload.name;
       return state.map((item) => {

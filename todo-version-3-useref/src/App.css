@@ -41,26 +41,7 @@
   background-color: #24241b;
 }
 
-.star-btn {
-  line-height: 1;
-  transition: transform var(--transition-speed);
-}
-
-.star-btn:hover {
-  transform: scale(1.2);
-}
-
-.star-unpinned {
-  opacity: 0.35;
-  transition: opacity var(--transition-speed);
-}
-
-.star-btn:hover .star-unpinned {
-  opacity: 0.9;
-  color: var(--warning-color) !important;
-}
-
-.todo-item-card.completed-item {
+[data-bs-theme="dark"] .todo-item-card.completed-item {
   background-color: #172033;
 }
 
@@ -183,6 +164,27 @@ body {
 .star-btn:hover .star-unpinned {
   opacity: 0.9;
   color: var(--warning-color) !important;
+}
+
+.reorder-btns {
+  line-height: 0.7;
+}
+
+.reorder-btn {
+  line-height: 1;
+  padding: 0 !important;
+  opacity: 0.45;
+  transition: opacity var(--transition-speed);
+}
+
+.reorder-btn:hover:not(:disabled) {
+  opacity: 1;
+  color: var(--primary-color) !important;
+}
+
+.reorder-btn:disabled {
+  opacity: 0.15;
+  cursor: not-allowed;
 }
 
 .todo-item-card.completed-item {

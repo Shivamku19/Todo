@@ -58,6 +58,7 @@ function TaskFilters({
             title="Sort tasks"
           >
             <option value="default">Sort: Default</option>
+            <option value="manual">Sort: Custom Order</option>
             <option value="dueDate">Sort: Due Date</option>
             <option value="priority">Sort: Priority</option>
             <option value="name">Sort: Name (A-Z)</option>

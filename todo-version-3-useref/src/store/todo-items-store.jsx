@@ -9,6 +9,8 @@ export const TodoItemsContext = createContext({
   addNewItem: () => {},
   deleteItem: () => {},
   restoreItem: () => {},
+  moveItemUp: () => {},
+  moveItemDown: () => {},
   toggleItem: () => {},
   togglePinItem: () => {},
   duplicateItem: () => {},
@@ -130,6 +132,20 @@ export const TodoItemsContextProvider = ({ children }) => {
     });
   };
 
+  const moveItemUp = (idOrName) => {
+    dispatch({
+      type: TODO_ACTIONS.MOVE_ITEM_UP,
+      payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
+    });
+  };
+
+  const moveItemDown = (idOrName) => {
+    dispatch({
+      type: TODO_ACTIONS.MOVE_ITEM_DOWN,
+      payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
+    });
+  };
+
   const duplicateItem = (idOrName) => {
     dispatch({
       type: TODO_ACTIONS.DUPLICATE_ITEM,
@@ -212,6 +228,8 @@ export const TodoItemsContextProvider = ({ children }) => {
         addNewItem,
         deleteItem,
         restoreItem,
+        moveItemUp,
+        moveItemDown,
         toggleItem,
         togglePinItem,
         duplicateItem,
