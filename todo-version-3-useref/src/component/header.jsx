@@ -1,9 +1,24 @@
 
-import { RiSunLine, RiMoonClearLine, RiKeyboardLine } from "react-icons/ri";
+import { useState } from "react";
+import {
+  RiSunLine,
+  RiMoonClearLine,
+  RiKeyboardLine,
+  RiVolumeUpLine,
+  RiVolumeMuteLine,
+} from "react-icons/ri";
 import { useTheme } from "../context/ThemeContext";
+import { isSoundEnabled, setSoundEnabled } from "../utils/soundEffects";
 
 function Header({ onOpenShortcuts }) {
   const { theme, toggleTheme } = useTheme();
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
+
+  const handleToggleSound = () => {
+    const nextState = !soundOn;
+    setSoundOn(nextState);
+    setSoundEnabled(nextState);
+  };
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-4">
@@ -11,6 +26,15 @@ function Header({ onOpenShortcuts }) {
         <h1 className="head mb-0">TODO APP</h1>
       </div>
       <div className="d-flex align-items-center gap-2">
+        <button
+          type="button"
+          className="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 rounded-circle"
+          onClick={handleToggleSound}
+          title={soundOn ? "Mute sound effects" : "Enable sound effects"}
+          aria-label={soundOn ? "Mute sound effects" : "Enable sound effects"}
+        >
+          {soundOn ? <RiVolumeUpLine size={19} className="text-primary" /> : <RiVolumeMuteLine size={19} className="text-muted" />}
+        </button>
         {onOpenShortcuts && (
           <button
             type="button"

@@ -8,6 +8,7 @@ import {
 } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
 import { useToast } from "../context/ToastContext";
+import { playTimerAlarmSound } from "../utils/soundEffects";
 
 const MODES = {
   WORK: { label: "Work Focus", duration: 25 * 60, color: "primary" },
@@ -38,6 +39,7 @@ function PomodoroModal({ isOpen, onClose, task }) {
       }, 1000);
     } else if (isRunning && timeLeft === 0) {
       setIsRunning(false);
+      playTimerAlarmSound();
       if (modeKey === "WORK" && task) {
         if (incrementPomodoro) incrementPomodoro(task.id);
         if (showToast) {

@@ -20,6 +20,7 @@ import {
 import { useTodo } from "../store/todo-items-store";
 import ConfirmModal from "./ConfirmModal";
 import PomodoroModal from "./PomodoroModal";
+import { playCompleteSound, playPopSound } from "../utils/soundEffects";
 
 function Todoitem({
   item,
@@ -189,7 +190,10 @@ function Todoitem({
           <button
             type="button"
             className="btn btn-link p-0 text-decoration-none toggle-btn"
-            onClick={() => ontoggleclk && ontoggleclk(targetIdentifier)}
+            onClick={() => {
+              if (!isCompleted) playCompleteSound();
+              if (ontoggleclk) ontoggleclk(targetIdentifier);
+            }}
             aria-label={isCompleted ? "Mark task as incomplete" : "Mark task as complete"}
           >
             {isCompleted ? (
@@ -368,13 +372,19 @@ function Todoitem({
                 <div
                   className="d-flex align-items-center gap-2 flex-grow-1"
                   style={{ cursor: "pointer" }}
-                  onClick={() => toggleSubtask && toggleSubtask(item.id, sub.id)}
+                  onClick={() => {
+                    playPopSound();
+                    if (toggleSubtask) toggleSubtask(item.id, sub.id);
+                  }}
                 >
                   <input
                     type="checkbox"
                     className="form-check-input mt-0"
                     checked={Boolean(sub.completed)}
-                    onChange={() => toggleSubtask && toggleSubtask(item.id, sub.id)}
+                    onChange={() => {
+                      playPopSound();
+                      if (toggleSubtask) toggleSubtask(item.id, sub.id);
+                    }}
                     aria-label={sub.title}
                   />
                   <span
