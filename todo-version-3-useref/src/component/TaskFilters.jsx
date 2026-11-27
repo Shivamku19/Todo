@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RiDatabase2Line, RiBarChartBoxLine } from "react-icons/ri";
+import { RiDatabase2Line, RiBarChartBoxLine, RiPrinterLine } from "react-icons/ri";
 import DataBackupModal from "./DataBackupModal";
 import ConfirmModal from "./ConfirmModal";
 import ProductivityStatsModal from "./ProductivityStatsModal";
@@ -104,6 +104,15 @@ function TaskFilters({
           >
             <RiBarChartBoxLine size={15} />
             <span>Insights</span>
+          </button>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1"
+            onClick={() => window.print()}
+            title="Print or Export checklist to PDF"
+          >
+            <RiPrinterLine size={15} />
+            <span>Print</span>
           </button>
         </div>
       </div>

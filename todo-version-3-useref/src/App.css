@@ -288,3 +288,49 @@ body {
     align-items: stretch !important;
   }
 }
+
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .todo-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .task-input-form,
+  .search-bar-container,
+  .task-filters-section,
+  .toast-container-custom,
+  .modal,
+  .reorder-btns,
+  .star-btn,
+  .btns,
+  header .d-flex.gap-2,
+  .btn {
+    display: none !important;
+  }
+
+  .todo-item-card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 0.5rem !important;
+    background-color: #ffffff !important;
+  }
+
+  .todo-item-card.completed-item {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .subtasks-container {
+    background-color: #ffffff !important;
+    border-top: 1px dashed #dddddd !important;
+  }
+}
