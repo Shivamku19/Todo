@@ -14,6 +14,7 @@ export const TodoItemsContext = createContext({
   toggleItem: () => {},
   togglePinItem: () => {},
   duplicateItem: () => {},
+  incrementPomodoro: () => {},
   updateItem: () => {},
   clearAll: () => {},
   clearCompleted: () => {},
@@ -156,6 +157,13 @@ export const TodoItemsContextProvider = ({ children }) => {
     }
   };
 
+  const incrementPomodoro = (idOrName) => {
+    dispatch({
+      type: TODO_ACTIONS.INCREMENT_POMODORO,
+      payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
+    });
+  };
+
   const updateItem = (id, updates) => {
     dispatch({
       type: TODO_ACTIONS.UPDATE_ITEM,
@@ -233,6 +241,7 @@ export const TodoItemsContextProvider = ({ children }) => {
         toggleItem,
         togglePinItem,
         duplicateItem,
+        incrementPomodoro,
         updateItem,
         clearAll,
         clearCompleted,

@@ -15,9 +15,11 @@ import {
   RiStarLine,
   RiStarFill,
   RiFileCopyLine,
+  RiTimerLine,
 } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
 import ConfirmModal from "./ConfirmModal";
+import PomodoroModal from "./PomodoroModal";
 
 function Todoitem({
   item,
@@ -48,6 +50,7 @@ function Todoitem({
   const [showSubtasks, setShowSubtasks] = useState(false);
   const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isPomodoroOpen, setIsPomodoroOpen] = useState(false);
 
   const subtasks = Array.isArray(item?.subtasks) ? item.subtasks : [];
   const completedSubtasks = subtasks.filter((s) => s.completed).length;
@@ -226,6 +229,11 @@ function Todoitem({
                 {item.category}
               </span>
             )}
+            {item?.pomodoros > 0 && (
+              <span className="badge bg-danger text-white small" title={`${item.pomodoros} focus sessions completed`}>
+                🍅 {item.pomodoros}
+              </span>
+            )}
             {Array.isArray(item?.tags) &&
               item.tags.map((tag) => (
                 <span key={tag} className="badge bg-light text-secondary border small">
@@ -264,6 +272,15 @@ function Todoitem({
           >
             <RiListCheck2 size={16} />
             {totalSubtasks > 0 && <span className="ms-1 small">{completedSubtasks}/{totalSubtasks}</span>}
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btns d-inline-flex align-items-center justify-content-center p-1"
+            onClick={() => setIsPomodoroOpen(true)}
+            aria-label={`Start Pomodoro for ${todoname}`}
+            title="Start Pomodoro focus session"
+          >
+            <RiTimerLine size={16} />
           </button>
           <button
             type="button"
@@ -313,6 +330,12 @@ function Todoitem({
           setIsDeleteModalOpen(false);
         }}
         onCancel={() => setIsDeleteModalOpen(false)}
+      />
+
+      <PomodoroModal
+        isOpen={isPomodoroOpen}
+        onClose={() => setIsPomodoroOpen(false)}
+        task={item}
       />
 
       {showSubtasks && (

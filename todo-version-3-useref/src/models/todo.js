@@ -34,6 +34,7 @@ export function createTodoItem({
   tags = [],
   subtasks = [],
   isPinned = false,
+  pomodoros = 0,
 } = {}) {
   const timestamp = new Date().toISOString();
   const id = typeof crypto !== 'undefined' && crypto.randomUUID
@@ -51,6 +52,7 @@ export function createTodoItem({
     tags: Array.isArray(tags) ? tags : [],
     subtasks: Array.isArray(subtasks) ? subtasks : [],
     isPinned: Boolean(isPinned),
+    pomodoros: Number(pomodoros) || 0,
     completed: false,
     createdAt: timestamp,
     updatedAt: timestamp,

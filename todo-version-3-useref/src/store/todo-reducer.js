@@ -81,6 +81,19 @@ export function todoReducer(state, action) {
       });
     }
 
+    case TODO_ACTIONS.INCREMENT_POMODORO: {
+      const targetId = action.payload.id || action.payload.name;
+      return state.map((item) => {
+        const matches = item.id ? item.id === targetId : item.name === targetId;
+        if (!matches) return item;
+        return {
+          ...item,
+          pomodoros: (Number(item.pomodoros) || 0) + 1,
+          updatedAt: new Date().toISOString(),
+        };
+      });
+    }
+
     case TODO_ACTIONS.DUPLICATE_ITEM: {
       const targetId = action.payload.id || action.payload.name;
       const index = state.findIndex((item) => (item.id ? item.id === targetId : item.name === targetId));
