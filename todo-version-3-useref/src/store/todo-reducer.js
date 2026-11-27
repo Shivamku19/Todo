@@ -34,6 +34,19 @@ export function todoReducer(state, action) {
       });
     }
 
+    case TODO_ACTIONS.TOGGLE_PIN_ITEM: {
+      const targetId = action.payload.id || action.payload.name;
+      return state.map((item) => {
+        const matches = item.id ? item.id === targetId : item.name === targetId;
+        if (!matches) return item;
+        return {
+          ...item,
+          isPinned: !item.isPinned,
+          updatedAt: new Date().toISOString(),
+        };
+      });
+    }
+
     case TODO_ACTIONS.UPDATE_ITEM: {
       const { id, updates } = action.payload;
       return state.map((item) => {

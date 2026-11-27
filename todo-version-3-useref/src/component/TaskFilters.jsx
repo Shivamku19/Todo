@@ -22,6 +22,7 @@ function TaskFilters({
     { key: 'all', label: 'All', count: counts.all },
     { key: 'active', label: 'Active', count: counts.active },
     { key: 'completed', label: 'Completed', count: counts.completed },
+    { key: 'starred', label: 'Starred', count: counts.starred || 0 },
   ];
 
   const allCompleted = counts.all > 0 && counts.all === counts.completed;

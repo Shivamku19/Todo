@@ -53,6 +53,7 @@ function AppContent() {
     all: todoItems.length,
     active: todoItems.filter((t) => !t.completed).length,
     completed: todoItems.filter((t) => t.completed).length,
+    starred: todoItems.filter((t) => t.isPinned).length,
   };
 
   useEffect(() => {
@@ -63,6 +64,7 @@ function AppContent() {
   const filteredItems = todoItems.filter((item) => {
     if (filter === "active" && item.completed) return false;
     if (filter === "completed" && !item.completed) return false;
+    if (filter === "starred" && !item.isPinned) return false;
     if (selectedTag && (!Array.isArray(item.tags) || !item.tags.includes(selectedTag))) {
       return false;
     }
@@ -80,6 +82,10 @@ function AppContent() {
   });
 
   const sortedItems = [...filteredItems].sort((a, b) => {
+    // Pinned tasks float to top
+    if (Boolean(a.isPinned) !== Boolean(b.isPinned)) {
+      return a.isPinned ? -1 : 1;
+    }
     if (sortBy === "dueDate") {
       if (!a.dueDate) return 1;
       if (!b.dueDate) return -1;

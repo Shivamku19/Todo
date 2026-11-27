@@ -36,7 +36,31 @@
   border-color: #334155;
 }
 
-[data-bs-theme="dark"] .todo-item-card.completed-item {
+[data-bs-theme="dark"] .todo-item-card.pinned-item {
+  border-left: 4px solid var(--warning-color);
+  background-color: #24241b;
+}
+
+.star-btn {
+  line-height: 1;
+  transition: transform var(--transition-speed);
+}
+
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+.star-unpinned {
+  opacity: 0.35;
+  transition: opacity var(--transition-speed);
+}
+
+.star-btn:hover .star-unpinned {
+  opacity: 0.9;
+  color: var(--warning-color) !important;
+}
+
+.todo-item-card.completed-item {
   background-color: #172033;
 }
 
@@ -130,6 +154,35 @@ body {
 .todo-item-card:hover {
   border-color: #cbd5e1;
   box-shadow: var(--shadow-subtle);
+}
+
+.todo-item-card.pinned-item {
+  border-left: 4px solid var(--warning-color);
+  background-color: #fffdf5;
+}
+
+[data-bs-theme="dark"] .todo-item-card.pinned-item {
+  border-left: 4px solid var(--warning-color);
+  background-color: #24241b;
+}
+
+.star-btn {
+  line-height: 1;
+  transition: transform var(--transition-speed);
+}
+
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+.star-unpinned {
+  opacity: 0.35;
+  transition: opacity var(--transition-speed);
+}
+
+.star-btn:hover .star-unpinned {
+  opacity: 0.9;
+  color: var(--warning-color) !important;
 }
 
 .todo-item-card.completed-item {

@@ -9,6 +9,7 @@ export const TodoItemsContext = createContext({
   addNewItem: () => {},
   deleteItem: () => {},
   toggleItem: () => {},
+  togglePinItem: () => {},
   updateItem: () => {},
   clearAll: () => {},
   clearCompleted: () => {},
@@ -92,6 +93,13 @@ export const TodoItemsContextProvider = ({ children }) => {
     });
   };
 
+  const togglePinItem = (idOrName) => {
+    dispatch({
+      type: TODO_ACTIONS.TOGGLE_PIN_ITEM,
+      payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
+    });
+  };
+
   const updateItem = (id, updates) => {
     dispatch({
       type: TODO_ACTIONS.UPDATE_ITEM,
@@ -164,6 +172,7 @@ export const TodoItemsContextProvider = ({ children }) => {
         addNewItem,
         deleteItem,
         toggleItem,
+        togglePinItem,
         updateItem,
         clearAll,
         clearCompleted,

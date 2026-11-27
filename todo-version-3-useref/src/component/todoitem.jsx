@@ -12,12 +12,14 @@ import {
   RiArrowDownSLine,
   RiArrowUpSLine,
   RiFileTextLine,
+  RiStarLine,
+  RiStarFill,
 } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
 import ConfirmModal from "./ConfirmModal";
 
 function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdateclk }) {
-  const { addSubtask, toggleSubtask, deleteSubtask } = useTodo();
+  const { addSubtask, toggleSubtask, deleteSubtask, togglePinItem } = useTodo();
   const targetIdentifier = item && item.id ? item.id : todoname;
   const isCompleted = Boolean(item && item.completed);
 
@@ -136,7 +138,7 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
   }
 
   return (
-    <div className={`todo-item-card container my-2 p-2 rounded ${isCompleted ? 'completed-item' : ''}`} role="listitem">
+    <div className={`todo-item-card container my-2 p-2 rounded ${isCompleted ? 'completed-item' : ''} ${item?.isPinned ? 'pinned-item' : ''}`} role="listitem">
       <div className="row kg-row align-items-center">
         <div className="col-1 text-center">
           <button
@@ -153,8 +155,23 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
           </button>
         </div>
         <div className="col-5">
-          <div className={`text-truncate fw-medium ${isCompleted ? 'text-decoration-line-through text-muted' : ''}`} title={todoname}>
-            {todoname}
+          <div className="d-flex align-items-center gap-1">
+            <button
+              type="button"
+              className="btn btn-link p-0 text-decoration-none star-btn flex-shrink-0"
+              onClick={() => togglePinItem && togglePinItem(targetIdentifier)}
+              title={item?.isPinned ? "Unpin task" : "Star / Pin to top"}
+              aria-label={item?.isPinned ? "Unpin task" : "Star / Pin to top"}
+            >
+              {item?.isPinned ? (
+                <RiStarFill size={17} className="text-warning" />
+              ) : (
+                <RiStarLine size={17} className="text-muted star-unpinned" />
+              )}
+            </button>
+            <span className={`text-truncate fw-medium ${isCompleted ? 'text-decoration-line-through text-muted' : ''}`} title={todoname}>
+              {todoname}
+            </span>
           </div>
           <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
             {item?.priority && (
