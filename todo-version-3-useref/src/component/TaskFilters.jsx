@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { RiDatabase2Line } from "react-icons/ri";
+import { RiDatabase2Line, RiBarChartBoxLine } from "react-icons/ri";
 import DataBackupModal from "./DataBackupModal";
 import ConfirmModal from "./ConfirmModal";
+import ProductivityStatsModal from "./ProductivityStatsModal";
+import { useTodo } from "../store/todo-items-store";
 
 function TaskFilters({
   currentFilter,
@@ -15,8 +17,10 @@ function TaskFilters({
   selectedTag = null,
   onSelectTag = () => {},
 }) {
+  const { todoItems } = useTodo();
   const [isBackupOpen, setIsBackupOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
 
   const filters = [
     { key: 'all', label: 'All', count: counts.all },
@@ -92,6 +96,15 @@ function TaskFilters({
             <RiDatabase2Line size={15} />
             <span>Backup</span>
           </button>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+            onClick={() => setIsStatsOpen(true)}
+            title="Productivity Insights & Analytics"
+          >
+            <RiBarChartBoxLine size={15} />
+            <span>Insights</span>
+          </button>
         </div>
       </div>
 
@@ -128,6 +141,11 @@ function TaskFilters({
       <DataBackupModal
         isOpen={isBackupOpen}
         onClose={() => setIsBackupOpen(false)}
+      />
+      <ProductivityStatsModal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+        todoItems={todoItems}
       />
       <ConfirmModal
         isOpen={isClearModalOpen}
