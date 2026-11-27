@@ -8,6 +8,7 @@ export const TodoItemsContext = createContext({
   todoItems: [],
   addNewItem: () => {},
   deleteItem: () => {},
+  restoreItem: () => {},
   toggleItem: () => {},
   togglePinItem: () => {},
   duplicateItem: () => {},
@@ -77,13 +78,41 @@ export const TodoItemsContextProvider = ({ children }) => {
     }
   };
 
+  const restoreItem = (item, index) => {
+    if (!item) return;
+    dispatch({
+      type: TODO_ACTIONS.RESTORE_ITEM,
+      payload: { item, index },
+    });
+    if (showToast) {
+      showToast(`Restored "${item.name}"`, 'success');
+    }
+  };
+
   const deleteItem = (idOrName) => {
+    const targetId = typeof idOrName === 'string' ? idOrName : idOrName?.id || idOrName?.name;
+    const itemIndex = todoItems.findIndex((it) => (it.id ? it.id === targetId : it.name === targetId));
+    const targetItem = itemIndex !== -1 ? todoItems[itemIndex] : null;
+
     dispatch({
       type: TODO_ACTIONS.DELETE_ITEM,
       payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
     });
+
     if (showToast) {
-      showToast('Task removed', 'info');
+      if (targetItem) {
+        showToast(
+          `Deleted "${targetItem.name}"`,
+          'info',
+          5000,
+          {
+            label: 'Undo',
+            onClick: () => restoreItem(targetItem, itemIndex),
+          }
+        );
+      } else {
+        showToast('Task removed', 'info');
+      }
     }
   };
 
@@ -182,6 +211,7 @@ export const TodoItemsContextProvider = ({ children }) => {
         todoItems,
         addNewItem,
         deleteItem,
+        restoreItem,
         toggleItem,
         togglePinItem,
         duplicateItem,

@@ -8,9 +8,9 @@ const ToastContext = createContext({
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
-  const showToast = useCallback((message, type = 'info', duration = 3000) => {
+  const showToast = useCallback((message, type = 'info', duration = 3000, action = null) => {
     const id = Date.now() + Math.random().toString(36).substring(2, 6);
-    setToasts((prev) => [...prev, { id, message, type }]);
+    setToasts((prev) => [...prev, { id, message, type, action }]);
 
     if (duration > 0) {
       setTimeout(() => {
@@ -24,12 +24,26 @@ export const ToastProvider = ({ children }) => {
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ showToast, removeToast }}>
       {children}
       <div className="toast-container-custom">
         {toasts.map((toast) => (
           <div key={toast.id} className={`custom-toast custom-toast-${toast.type}`}>
-            <span>{toast.message}</span>
+            <span className="flex-grow-1">{toast.message}</span>
+            {toast.action && (
+              <button
+                type="button"
+                className="toast-action-btn"
+                onClick={() => {
+                  if (typeof toast.action.onClick === 'function') {
+                    toast.action.onClick();
+                  }
+                  removeToast(toast.id);
+                }}
+              >
+                {toast.action.label || 'Undo'}
+              </button>
+            )}
             <button
               type="button"
               className="toast-close-btn"

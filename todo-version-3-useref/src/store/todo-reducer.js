@@ -21,6 +21,18 @@ export function todoReducer(state, action) {
       return state.filter((item) => (item.id ? item.id !== targetId : item.name !== targetId));
     }
 
+    case TODO_ACTIONS.RESTORE_ITEM: {
+      const { item, index } = action.payload;
+      if (!item) return state;
+      const newState = [...state];
+      if (typeof index === 'number' && index >= 0 && index <= state.length) {
+        newState.splice(index, 0, item);
+      } else {
+        newState.unshift(item);
+      }
+      return newState;
+    }
+
     case TODO_ACTIONS.TOGGLE_ITEM: {
       const targetId = action.payload.id || action.payload.name;
       return state.map((item) => {
