@@ -47,6 +47,36 @@ export function todoReducer(state, action) {
       });
     }
 
+    case TODO_ACTIONS.DUPLICATE_ITEM: {
+      const targetId = action.payload.id || action.payload.name;
+      const index = state.findIndex((item) => (item.id ? item.id === targetId : item.name === targetId));
+      if (index === -1) return state;
+      const original = state[index];
+      const timestamp = new Date().toISOString();
+      const clonedId = typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : 'todo_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+
+      const clonedItem = {
+        ...original,
+        id: clonedId,
+        name: `${original.name} (Copy)`,
+        completed: false,
+        subtasks: Array.isArray(original.subtasks)
+          ? original.subtasks.map((s) => ({
+              ...s,
+              id: 'sub_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+              completed: false,
+            }))
+          : [],
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      };
+      const newState = [...state];
+      newState.splice(index + 1, 0, clonedItem);
+      return newState;
+    }
+
     case TODO_ACTIONS.UPDATE_ITEM: {
       const { id, updates } = action.payload;
       return state.map((item) => {

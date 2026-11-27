@@ -10,6 +10,7 @@ export const TodoItemsContext = createContext({
   deleteItem: () => {},
   toggleItem: () => {},
   togglePinItem: () => {},
+  duplicateItem: () => {},
   updateItem: () => {},
   clearAll: () => {},
   clearCompleted: () => {},
@@ -100,6 +101,16 @@ export const TodoItemsContextProvider = ({ children }) => {
     });
   };
 
+  const duplicateItem = (idOrName) => {
+    dispatch({
+      type: TODO_ACTIONS.DUPLICATE_ITEM,
+      payload: typeof idOrName === 'string' ? { id: idOrName, name: idOrName } : idOrName,
+    });
+    if (showToast) {
+      showToast('Task duplicated successfully!', 'success');
+    }
+  };
+
   const updateItem = (id, updates) => {
     dispatch({
       type: TODO_ACTIONS.UPDATE_ITEM,
@@ -173,6 +184,7 @@ export const TodoItemsContextProvider = ({ children }) => {
         deleteItem,
         toggleItem,
         togglePinItem,
+        duplicateItem,
         updateItem,
         clearAll,
         clearCompleted,

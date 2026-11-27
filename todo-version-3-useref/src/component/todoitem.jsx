@@ -14,12 +14,13 @@ import {
   RiFileTextLine,
   RiStarLine,
   RiStarFill,
+  RiFileCopyLine,
 } from "react-icons/ri";
 import { useTodo } from "../store/todo-items-store";
 import ConfirmModal from "./ConfirmModal";
 
 function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdateclk }) {
-  const { addSubtask, toggleSubtask, deleteSubtask, togglePinItem } = useTodo();
+  const { addSubtask, toggleSubtask, deleteSubtask, togglePinItem, duplicateItem } = useTodo();
   const targetIdentifier = item && item.id ? item.id : todoname;
   const isCompleted = Boolean(item && item.completed);
 
@@ -222,6 +223,15 @@ function Todoitem({ item, todoname, tododate, ondeleteclk, ontoggleclk, onupdate
           >
             <RiListCheck2 size={16} />
             {totalSubtasks > 0 && <span className="ms-1 small">{completedSubtasks}/{totalSubtasks}</span>}
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btns d-inline-flex align-items-center justify-content-center p-1"
+            onClick={() => duplicateItem && duplicateItem(targetIdentifier)}
+            aria-label={`Duplicate ${todoname}`}
+            title="Duplicate task"
+          >
+            <RiFileCopyLine size={16} />
           </button>
           <button
             type="button"
